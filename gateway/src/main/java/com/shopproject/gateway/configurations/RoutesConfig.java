@@ -1,13 +1,11 @@
 package com.shopproject.gateway.configurations;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@Tag(name = "main_methods")
 public class RoutesConfig {
 
     @Bean
@@ -31,6 +29,23 @@ public class RoutesConfig {
                         .uri("http://localhost:8082/refund/"))
                 .route(r -> r.path("/orders")
                         .uri("http://localhost:8082/orders"))
+
+                .route(r -> r.path("/test")
+                        .uri("http://localhost:8084/swagger-ui/index.html#/"))
+
+
+                .route(r -> r.path("/doc/user")
+                        .uri("http://localhost:8081/doc/user"))
+                .route(r -> r.path("/doc/product")
+                        .uri("http://localhost:8080/doc/product"))
+                .route(r -> r.path("/doc/purchase")
+                        .uri("http://localhost:8082/doc/purchase"))
+                .route(r -> r.path("/doc/guarantee")
+                        .uri("http://localhost:8083/doc/guarantee"))
+                .route(r -> r.path("/doc/report")
+                        .uri("http://localhost:8084/doc/report"))
+
                 .build();
+
     }
 }
