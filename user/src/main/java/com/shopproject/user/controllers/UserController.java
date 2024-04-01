@@ -6,6 +6,7 @@ import com.shopproject.user.exeptions.AppError;
 import com.shopproject.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,4 +28,8 @@ public class UserController {
         return new UserDto(user.getId(), user.getName(), user.getMail());
     }
 
+    @GetMapping("/user/api-docs")
+    public SpringDocConfigProperties.ApiDocs.OpenApiVersion[] doc(){
+        return SpringDocConfigProperties.ApiDocs.OpenApiVersion.values();
+    }
 }

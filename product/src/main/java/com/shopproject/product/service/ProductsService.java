@@ -77,7 +77,7 @@ public class ProductsService {
                 "Ошибка при попытке изменить количество товара"),HttpStatus.LOCKED);
     }
 
-//    @PostConstruct //работает, но пока отколючила
+//    @PostConstruct // тоже работает, но пока отколючила, лучше через компонент
 //    public void incrementQuantity() {
 //        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 //        executor.scheduleAtFixedRate(() -> warehouseRepository.quantityPutTwo(), 0, 5, TimeUnit.MINUTES);

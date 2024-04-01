@@ -42,6 +42,7 @@ public class SecurityConfig  {
                 .cors().disable()
                 .authorizeRequests()
                 .requestMatchers("/me").authenticated()
+                .requestMatchers("/doc").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

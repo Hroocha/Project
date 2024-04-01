@@ -5,6 +5,7 @@ import com.shopproject.product.entities.Product;
 import com.shopproject.product.service.ProductsService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -41,6 +42,10 @@ public class ProductsController {
         return productsService.put(productId);
     }
 
+    @GetMapping("/product/api-docs")
+    public SpringDocConfigProperties.ApiDocs.OpenApiVersion[] doc(){
+        return SpringDocConfigProperties.ApiDocs.OpenApiVersion.values();
+    }
 
 
 

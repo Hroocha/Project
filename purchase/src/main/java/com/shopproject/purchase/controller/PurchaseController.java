@@ -8,6 +8,7 @@ import com.shopproject.purchase.service.RequestService;
 import com.sun.tools.attach.AttachOperationFailedException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.*;
@@ -44,5 +45,9 @@ public class PurchaseController {
         return purchaseService.refund(purchaseId);
     }
 
+    @GetMapping("/purchase/api-docs")
+    public SpringDocConfigProperties.ApiDocs.OpenApiVersion[] doc(){
+        return SpringDocConfigProperties.ApiDocs.OpenApiVersion.values();
+    }
 
 }

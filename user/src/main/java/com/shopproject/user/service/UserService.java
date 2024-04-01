@@ -43,11 +43,10 @@ public class UserService implements UserDetailsService {
         return user.getId();
     }
 
-    // преобразование пользователя в спрингового пользователя
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByLogin(username).orElseThrow(() -> new UsernameNotFoundException( // ищем user, если не найдем кидаем исключение
+        User user = findByLogin(username).orElseThrow(() -> new UsernameNotFoundException(
                 String.format("Пользователь '%s' не найден", username)
         ));
         return new org.springframework.security.core.userdetails.User(

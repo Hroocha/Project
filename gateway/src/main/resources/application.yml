@@ -1,0 +1,42 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: 'true'
+          lower-case-service-id: 'true'
+  application:
+    name: gateway
+
+server:
+  port: '8765'
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: trace
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service
+      - url: /product/api-docs
+        name: Product Service
+      - url: /user/api-docs
+        name: User Service
+      - url: /purchase/api-docs
+        name: Purchase Service
+      - url: /guarantee/api-docs
+        name: Guarantee Service
+      - url: /report/api-docs
+        name: Report Service

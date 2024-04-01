@@ -30,20 +30,16 @@ public class RoutesConfig {
                 .route(r -> r.path("/orders")
                         .uri("http://localhost:8082/orders"))
 
-                .route(r -> r.path("/test")
-                        .uri("http://localhost:8084/swagger-ui/index.html#/"))
-
-
-                .route(r -> r.path("/doc/user")
-                        .uri("http://localhost:8081/doc/user"))
-                .route(r -> r.path("/doc/product")
-                        .uri("http://localhost:8080/doc/product"))
-                .route(r -> r.path("/doc/purchase")
-                        .uri("http://localhost:8082/doc/purchase"))
-                .route(r -> r.path("/doc/guarantee")
-                        .uri("http://localhost:8083/doc/guarantee"))
-                .route(r -> r.path("/doc/report")
-                        .uri("http://localhost:8084/doc/report"))
+                .route(r -> r.path("/product/api-docs")
+                        .uri("http://localhost:8080/product/api-docs"))
+                .route(r -> r.path("/user/api-docs")
+                        .uri("http://localhost:8081/user/api-docs"))
+                .route(r -> r.path("/purchase/api-docs")
+                        .uri("http://localhost:8082/purchase/api-docs"))
+                .route(r -> r.path("/guarantee/api-docs")
+                        .uri("http://localhost:8083/guarantee/api-docs"))
+                .route(r -> r.path("/report/api-docs")
+                        .uri("http://localhost:8084/report/api-docs"))
 
                 .build();
 

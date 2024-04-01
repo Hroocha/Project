@@ -1,27 +1,20 @@
 package com.shopproject.guarantee.controller;
 
-import com.shopproject.guarantee.dto.GuaranteeDto;
 import com.shopproject.guarantee.dto.GuaranteeRequest;
-import com.shopproject.guarantee.entity.Guarantee;
 import com.shopproject.guarantee.service.GuaranteeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "main_methods")
 public class GuaranteeController {
     private final GuaranteeService guaranteeService;
-
-    @Autowired
-    public GuaranteeController(GuaranteeService guaranteeService) {
-        this.guaranteeService = guaranteeService;
-    }
 
     @PostMapping ("/guarantee/stop/{purchase_id}")
     public ResponseEntity<?> stopGuarantee (@PathVariable(value = "purchase_id") UUID purchaseId){
@@ -37,6 +30,12 @@ public class GuaranteeController {
     public ResponseEntity<?> getGuarantee (@PathVariable(value = "purchase_id") UUID purchaseId){
         return guaranteeService.getGuarantee(purchaseId);
     }
+
+    @GetMapping("/guarantee/api-docs")
+    public SpringDocConfigProperties.ApiDocs.OpenApiVersion[] doc(){
+        return SpringDocConfigProperties.ApiDocs.OpenApiVersion.values();
+    }
+
 
 
 }

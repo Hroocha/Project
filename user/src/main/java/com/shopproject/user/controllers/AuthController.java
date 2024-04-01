@@ -28,9 +28,8 @@ public class AuthController {
     private final UserService userService;
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/auth") //log_in
+    @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
         try {
             authenticationManager.authenticate(
@@ -58,9 +57,5 @@ public class AuthController {
         User user = userService.createNewUser(registrationUserDTO);
         return ResponseEntity.ok(new UserDto(user.getId(), user.getName(), user.getMail()));
     }
-
-
-
-
 
 }
