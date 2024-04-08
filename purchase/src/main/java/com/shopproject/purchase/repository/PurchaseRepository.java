@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,25 +16,19 @@ import java.util.UUID;
 @Repository
 public interface PurchaseRepository extends PagingAndSortingRepository<Purchase, UUID>, CrudRepository<Purchase, UUID> {
 
-    Optional <Purchase> findFirstByStatusOrderByDateOfPurchase(Status status);
-    Optional <Purchase> findFirstByStatusOrStatusOrderByDateOfPurchase(Status statusOne, Status statusTwo);
+    Optional<Purchase> findFirstByStatusOrderByDateOfPurchase(Status status);
+
+    Optional<Purchase> findFirstByStatusInOrderByDateOfPurchase(Status [] statuses);
+
+
+
     Page<Purchase> findByUserId(Pageable pageable, UUID id);
 
-//    List<Purchase> findByUserId(UUID id);
-//    @Query(value = "UPDATE purchase SET status = :status WHERE id = :id", nativeQuery = true)
-//    @Modifying
-//    @Transactional
-//    void updateStatus(@Param("id") UUID id, Status status);
-//
-//    @Query(value = "UPDATE purchase SET status = :status, comment = :comment WHERE id = :id", nativeQuery = true)
-//    @Modifying
-//    @Transactional
-//    void updateStatusError(@Param("id") UUID id, Status status, String comment);
+    List<Purchase> getAllByDateOfPurchaseBetweenAndStatus(LocalDateTime from, LocalDateTime to, Status status);
 
-//    @Query(value = "SELECT * FROM purchase WHERE status = :status ORDER BY date_of_purchase LIMIT 1", nativeQuery = true)
-//    @Modifying
-//    @Transactional
-//    Optional <Purchase> takePurchase(Status status);
+    List<Purchase> getAllByDateOfPurchaseBetweenAndStatusAndUserIdEquals(
+            LocalDateTime from, LocalDateTime to, Status status, UUID userid);
 
-
+    List<Purchase> getAllByDateOfPurchaseBetweenAndStatusAndProductIdEquals(
+            LocalDateTime from, LocalDateTime to, Status status, UUID productId);
 }

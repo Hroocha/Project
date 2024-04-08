@@ -30,6 +30,15 @@ public class RoutesConfig {
                 .route(r -> r.path("/orders")
                         .uri("http://localhost:8082/orders"))
 
+                .route(r -> r.path("/statistics/sales")
+                        .uri("http://localhost:8084/statistics/sales"))
+                .route(r -> r.path("/statistics/sales/{product_id}")
+                        .uri("http://localhost:8084/statistics/sales/"))
+                .route(r -> r.path("/statistics/average_bill")
+                        .uri("http://localhost:8084/statistics/average_bill"))
+                .route(r -> r.path("/statistics/average_bill/{user_id}")
+                        .uri("http://localhost:8084/statistics/average_bill/"))
+
                 .route(r -> r.path("/product/api-docs")
                         .uri("http://localhost:8080/product/api-docs"))
                 .route(r -> r.path("/user/api-docs")

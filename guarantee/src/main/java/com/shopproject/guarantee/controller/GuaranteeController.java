@@ -18,17 +18,18 @@ public class GuaranteeController {
 
     @PostMapping ("/guarantee/stop/{purchase_id}")
     public ResponseEntity<?> stopGuarantee (@PathVariable(value = "purchase_id") UUID purchaseId){
-        return guaranteeService.stopGuarantee(purchaseId);
+        return ResponseEntity.ok(guaranteeService.stopGuarantee(purchaseId));
     }
 
     @PostMapping ("/guarantee/set")
     public ResponseEntity<?> setGuarantee (@RequestBody GuaranteeRequest guarantee){
-        return guaranteeService.setGuarantee(guarantee.getPurchaseId(), guarantee.getValidInMonth());
+
+        return ResponseEntity.ok(guaranteeService.setGuarantee(guarantee.getPurchaseId(), guarantee.getGuaranteePeriod()));
     }
 
     @GetMapping("/guarantee/{purchase_id}")
     public ResponseEntity<?> getGuarantee (@PathVariable(value = "purchase_id") UUID purchaseId){
-        return guaranteeService.getGuarantee(purchaseId);
+        return ResponseEntity.ok(guaranteeService.getGuarantee(purchaseId));
     }
 
     @GetMapping("/guarantee/api-docs")

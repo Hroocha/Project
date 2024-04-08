@@ -11,4 +11,5 @@ import java.util.UUID;
 public class ProductDto {
     private UUID id;
     private BigDecimal price;
+    private Integer guaranteePeriod;
 }

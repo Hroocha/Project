@@ -4,7 +4,6 @@ package com.shopproject.product.service;
 import com.shopproject.product.dto.ProductDto;
 import com.shopproject.product.entities.Product;
 import com.shopproject.product.entities.Warehouse;
-import com.shopproject.product.exeptions.AppError;
 import com.shopproject.product.repository.ProductRepository;
 import com.shopproject.product.repository.WarehouseRepository;
 import jakarta.ws.rs.NotFoundException;
@@ -13,13 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Recover;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -30,8 +24,8 @@ public class ProductsService {
     private final ProductRepository productRepository;
     private final WarehouseRepository warehouseRepository;
 
-    public Page<Product> getAll(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, 5, Sort.by("name").ascending());
+    public Page<Product> getAll(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
         return productRepository.findAll(pageable);
     }
 
@@ -41,25 +35,27 @@ public class ProductsService {
         );
     }
 
-    @Retryable(value = ObjectOptimisticLockingFailureException.class, maxAttempts = 10, backoff = @Backoff(delay = 1000))
-    public ResponseEntity<?> take(UUID id) {
+    @Transactional
+//    @Retryable(maxAttempts = 10)
+    public ProductDto take(UUID id) {
         Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(() -> new NotFoundException(
                 String.format("Товар '%s' не найден", id))
         );
         if (warehouse.getQuantity() <= 0) {
-            return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),
-                    "Товар закончился"), HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Товар закончился");
         } else {
             warehouse.setQuantity(warehouse.getQuantity()-1);
             warehouseRepository.save(warehouse);
             Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException(
                     String.format("Товар '%s' не найден", id))
             );
-            return ResponseEntity.ok(new ProductDto(product.getId(), product.getPrice()));
+            return new ProductDto(product.getId(), product.getPrice(), product.getGuaranteePeriod());
         }
     }
-    @Retryable(value = ObjectOptimisticLockingFailureException.class, maxAttempts = 10, backoff = @Backoff(delay = 1000))
-    public ResponseEntity<?> put(UUID id) {
+
+    @Transactional
+//    @Retryable(maxAttempts = 10)
+    public ProductDto put(UUID id) {
         Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(() -> new NotFoundException(
                 String.format("Товар '%s' не найден", id))
         );
@@ -68,14 +64,14 @@ public class ProductsService {
         );
         warehouse.setQuantity(warehouse.getQuantity()+1);
         warehouseRepository.save(warehouse);
-        return ResponseEntity.ok(new ProductDto(product.getId(), product.getPrice()));
+        return new ProductDto(product.getId(), product.getPrice(), product.getGuaranteePeriod());
     }
 
-    @Recover
-    public ResponseEntity<?> recover(ObjectOptimisticLockingFailureException e) {
-        return new ResponseEntity<>(new AppError(HttpStatus.LOCKED.value(),
-                "Ошибка при попытке изменить количество товара"),HttpStatus.LOCKED);
-    }
+//    @Recover
+//    public ResponseEntity<?> recover(ObjectOptimisticLockingFailureException e) {
+//        return new ResponseEntity<>(new AppError(HttpStatus.LOCKED.value(),
+//                "Ошибка при попытке изменить количество товара"),HttpStatus.LOCKED);
+//    }
 
 //    @PostConstruct // тоже работает, но пока отколючила, лучше через компонент
 //    public void incrementQuantity() {

@@ -5,11 +5,13 @@ CREATE TABLE products
     name             VARCHAR(255) UNIQUE NOT NULL,
     price            NUMERIC             NOT NULL,
     guarantee_period INT                 NOT NULL,
-    picture          BYTEA
+    picture          BYTEA,
+    version          INTEGER
 );
 
 CREATE TABLE warehouse
 (
     id       UUID PRIMARY KEY REFERENCES products (id) NOT NULL,
-    quantity INT                                       NOT NULL
+    quantity INT                                       NOT NULL,
+    version  INTEGER
 );

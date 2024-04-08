@@ -11,5 +11,5 @@ import java.util.UUID;
 public class GuaranteeRequest {
 
     private UUID purchaseId;
-    private Integer validInMonth;
+    private Integer guaranteePeriod;
 }

@@ -17,15 +17,23 @@ public class Product {
 
     @Id
     @GeneratedValue
-    @Column (name = "id")
+    @Column(name = "id")
     private UUID id;
-    @Column (name = "name")
+
+    @Column(name = "name")
     private String name;
-    @Column (name = "price")
+
+    @Column(name = "price")
     private BigDecimal price;
-    @Column (name = "guarantee_period")
+
+    @Column(name = "guarantee_period")
     private Integer guaranteePeriod;
-    @Column (name = "picture")
+
+    @Column(name = "picture")
     private byte[] picture;
+
+    @Version
+    @Column(name = "version")
+    private Integer version;
 
 }

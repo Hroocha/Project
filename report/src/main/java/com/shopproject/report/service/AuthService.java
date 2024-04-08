@@ -1,9 +1,7 @@
-package com.shopproject.purchase.service;
+package com.shopproject.report.service;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.shopproject.purchase.dtos.JwtRequest;
-import com.shopproject.purchase.dtos.JwtResponse;
+import com.shopproject.report.dtos.JwtRequest;
+import com.shopproject.report.dtos.JwtResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

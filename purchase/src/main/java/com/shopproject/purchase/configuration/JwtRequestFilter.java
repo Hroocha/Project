@@ -37,8 +37,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 login = jwtTokenUtils.getLogin(jwt);
             } catch (ExpiredJwtException e) {
                 log.debug("Время жизни токена вышло");
+                throw e;
             } catch (Exception e) {
                 log.debug("Произошла ошибка при работе токена");
+                throw e;
             }
         }
         if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {

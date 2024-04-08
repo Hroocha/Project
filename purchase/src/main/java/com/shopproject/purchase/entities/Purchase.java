@@ -1,13 +1,11 @@
 package com.shopproject.purchase.entities;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -31,6 +29,9 @@ public class Purchase {
     @Column (name = "price")
     private BigDecimal price;
 
+    @Column (name = "guarantee_period")
+    private Integer guaranteePeriod;
+
     @Column (name = "date_of_purchase")
     private LocalDateTime dateOfPurchase;
 
@@ -39,13 +40,20 @@ public class Purchase {
     private Status status;
 
     @Column (name = "comment")
-    private String comment;
+    private String comment = "";
 
-    public Purchase(UUID userId, UUID productId, BigDecimal price, LocalDateTime dateOfPurchase, Status status) {
+    @Version
+    @Column (name = "version")
+    private Integer version;
+
+    public Purchase(UUID userId, UUID productId, BigDecimal price, Integer guaranteePeriod,
+                    LocalDateTime dateOfPurchase, Status status) {
         this.userId = userId;
         this.productId = productId;
         this.price = price;
+        this.guaranteePeriod = guaranteePeriod;
         this.dateOfPurchase = dateOfPurchase;
         this.status = status;
+        this.version = 0;
     }
 }

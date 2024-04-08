@@ -22,24 +22,24 @@ public class ProductsController {
     private final ProductsService productsService;
 
     @GetMapping("/products")
-    public Page<Product> showAll (@RequestParam(value = "page") int page){
-        return productsService.getAll(page);
+    public Page<Product> showAll (@RequestParam(value = "page") int page, @RequestParam(value = "page_size") int pageSize){
+        return productsService.getAll(page, pageSize);
     }
     @GetMapping("/products/{id}")
     public Product showOneProduct(@PathVariable(value = "id") UUID productId){
         return productsService.getById(productId);
     }
-    @GetMapping("/products/guarantee/{id}")
-    public Integer getGuarantee(@PathVariable(value = "id") UUID productId){
-        return productsService.getById(productId).getGuaranteePeriod();
-    }
+//    @GetMapping("/products/guarantee/{id}")
+//    public ProductDto getGuarantee(@PathVariable(value = "id") UUID productId){
+//        return productsService.getById(productId).getGuaranteePeriod();
+//    }
     @PostMapping("/products/take/{id}")
     public ResponseEntity<?> takeProduct(@PathVariable(value = "id") UUID productId){
-        return productsService.take(productId);
+        return ResponseEntity.ok(productsService.take(productId));
     }
     @PostMapping("/products/put/{id}")
     public ResponseEntity<?> putProduct(@PathVariable(value = "id") UUID productId){
-        return productsService.put(productId);
+        return ResponseEntity.ok(productsService.put(productId));
     }
 
     @GetMapping("/product/api-docs")

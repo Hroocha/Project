@@ -19,9 +19,15 @@ public class Warehouse {
     @Column(name = "id")
     private UUID id;
 
-    @Version
     @Column (name = "quantity")
     private Integer quantity;
 
+    @Version
+    @Column (name = "version")
+    private Integer version;
 
+    public Warehouse(Integer quantity) {
+        this.quantity = quantity;
+        this.version = 0;
+    }
 }

@@ -3,8 +3,10 @@ package com.shopproject.user.service;
 import com.shopproject.user.dtos.RegistrationUserDTO;
 import com.shopproject.user.entity.User;
 import com.shopproject.user.repository.UserRepository;
+import com.shopproject.user.utils.JwtTokenUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +20,7 @@ import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
+
     private UserRepository userRepository;
     private  PasswordEncoder passwordEncoder;
 
@@ -32,10 +35,12 @@ public class UserService implements UserDetailsService {
 
 
 
+
     public Optional<User> findByLogin(String login) {
         return userRepository.findByLogin(login);
     }
 
+    @Transactional
     public UUID getIdByLogin(String login) {
         User user = findByLogin(login).orElseThrow(() -> new UsernameNotFoundException(
                 String.format("Пользователь '%s' не найден", login)
@@ -56,12 +61,14 @@ public class UserService implements UserDetailsService {
         );
     }
 
+    @Transactional
     public User createNewUser(RegistrationUserDTO registrationUserDTO) {
         User user = new User();
         user.setLogin(registrationUserDTO.getLogin());
         user.setPassword(passwordEncoder.encode(registrationUserDTO.getPassword()));
         user.setName(registrationUserDTO.getName());
         user.setMail(registrationUserDTO.getMail());
+        user.setVersion(0);
         return userRepository.save(user);
     }
 }

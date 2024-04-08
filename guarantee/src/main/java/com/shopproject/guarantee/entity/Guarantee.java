@@ -26,8 +26,13 @@ public class Guarantee {
     @Column (name = "valid_until")
     private LocalDate validUntil;
 
+    @Version
+    @Column(name = "version")
+    private Integer version;
+
     public Guarantee(UUID purchaseId, LocalDate validUntil) {
         this.purchaseId = purchaseId;
         this.validUntil = validUntil;
+        this.version = 0;
     }
 }

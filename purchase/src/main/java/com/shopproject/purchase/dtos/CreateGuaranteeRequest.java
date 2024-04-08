@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class GuaranteeRequest {
+public class CreateGuaranteeRequest {
     private UUID purchaseId;
-    private Integer validInMonth;
+    private Integer guaranteePeriod;
 }

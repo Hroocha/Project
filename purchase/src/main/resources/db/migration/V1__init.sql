@@ -5,7 +5,9 @@ CREATE TABLE purchase
     user_id          UUID         NOT NULL,
     product_id       UUID         NOT NULL,
     price            NUMERIC      NOT NULL,
+    guarantee_period INTEGER      NOT NULL,
     date_of_purchase TIMESTAMP    NOT NULL,
     status           VARCHAR(255) NOT NULL,
-    comment          VARCHAR(255)
+    comment          VARCHAR(255),
+    version          INTEGER      NOT NULL
 );
