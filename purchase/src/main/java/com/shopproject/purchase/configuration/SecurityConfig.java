@@ -1,6 +1,7 @@
 package com.shopproject.purchase.configuration;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,9 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors().disable()
                 .authorizeRequests()
+                .requestMatchers("/purchase/api-docs").permitAll()
                 .requestMatchers("/orders").authenticated()
-                .requestMatchers("/purchase/**").authenticated()
+                .requestMatchers("/purchase/{id}").authenticated()
                 .requestMatchers("/sales").authenticated()
                 .requestMatchers("/sales/{product_id}").authenticated()
                 .requestMatchers("/average_bill").authenticated()
@@ -43,6 +45,7 @@ public class SecurityConfig {
         return http.build();
     }
     @Bean
+    @LoadBalanced
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }

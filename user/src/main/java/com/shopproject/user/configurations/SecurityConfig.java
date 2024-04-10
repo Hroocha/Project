@@ -19,9 +19,8 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity // видимо не включает в себя @Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-//@RequiredArgsConstructor // генерирует конструктор для всех final полей
 public class SecurityConfig  {
     private UserService userService;
     private JwtRequestFilter jwtRequestFilter;

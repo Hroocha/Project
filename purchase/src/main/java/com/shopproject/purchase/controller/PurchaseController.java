@@ -1,8 +1,9 @@
 package com.shopproject.purchase.controller;
 
-import com.shopproject.purchase.dtos.ProductDto;
+import com.shopproject.purchase.dtos.PurchaseDto;
 import com.shopproject.purchase.entities.Purchase;
-import com.shopproject.purchase.service.impl.PurchaseService;
+import com.shopproject.purchase.service.PurchaseService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -18,12 +19,12 @@ import java.util.UUID;
 @EnableScheduling
 @EnableRetry
 @RequiredArgsConstructor
-@Tag(name = "main_methods")
+@Tag(name = "main methods")
 public class PurchaseController {
     private final PurchaseService purchaseService;
 
     @GetMapping("/orders")
-    public Page<Purchase> showByID(@RequestParam(value = "page") int page,@RequestParam(value = "page_size")int pageSize) {
+    public Page<PurchaseDto> showByID(@RequestParam(value = "page") int page, @RequestParam(value = "page_size")int pageSize) {
         return purchaseService.getOrdersByUser(page, pageSize);
     }
 
@@ -37,6 +38,7 @@ public class PurchaseController {
         return ResponseEntity.ok(purchaseService.refund(purchaseId));
     }
 
+    @Hidden
     @GetMapping("/purchase/api-docs")
     public SpringDocConfigProperties.ApiDocs.OpenApiVersion[] doc(){
         return SpringDocConfigProperties.ApiDocs.OpenApiVersion.values();

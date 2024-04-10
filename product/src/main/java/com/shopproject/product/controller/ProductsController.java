@@ -1,8 +1,9 @@
 package com.shopproject.product.controller;
 
 
-import com.shopproject.product.entities.Product;
-import com.shopproject.product.service.ProductsService;
+import com.shopproject.product.dto.ProductResponse;
+import com.shopproject.product.service.ProductsServiceImpl;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -15,24 +16,21 @@ import java.util.UUID;
 
 @RestController
 @EnableScheduling
-@Tag(name = "main_methods")
+@Tag(name = "main methods")
 @RequiredArgsConstructor
 public class ProductsController {
 
-    private final ProductsService productsService;
+    private final ProductsServiceImpl productsService;
 
     @GetMapping("/products")
-    public Page<Product> showAll (@RequestParam(value = "page") int page, @RequestParam(value = "page_size") int pageSize){
+    public Page<ProductResponse> showAll (@RequestParam(value = "page") int page, @RequestParam(value = "page_size") int pageSize){
         return productsService.getAll(page, pageSize);
     }
     @GetMapping("/products/{id}")
-    public Product showOneProduct(@PathVariable(value = "id") UUID productId){
+    public ProductResponse showOneProduct(@PathVariable(value = "id") UUID productId){
         return productsService.getById(productId);
     }
-//    @GetMapping("/products/guarantee/{id}")
-//    public ProductDto getGuarantee(@PathVariable(value = "id") UUID productId){
-//        return productsService.getById(productId).getGuaranteePeriod();
-//    }
+
     @PostMapping("/products/take/{id}")
     public ResponseEntity<?> takeProduct(@PathVariable(value = "id") UUID productId){
         return ResponseEntity.ok(productsService.take(productId));
@@ -42,6 +40,7 @@ public class ProductsController {
         return ResponseEntity.ok(productsService.put(productId));
     }
 
+    @Hidden
     @GetMapping("/product/api-docs")
     public SpringDocConfigProperties.ApiDocs.OpenApiVersion[] doc(){
         return SpringDocConfigProperties.ApiDocs.OpenApiVersion.values();

@@ -1,4 +1,4 @@
-package com.shopproject.purchase.dtos.statisticsDto;
+package com.shopproject.purchase.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

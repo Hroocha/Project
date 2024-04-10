@@ -1,6 +1,6 @@
-package com.shopproject.purchase.controller;
+package com.shopproject.report.controller;
 
-import com.shopproject.purchase.exeptions.Response;
+import com.shopproject.report.exeptions.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,8 +14,6 @@ public class ExceptionController {
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
 
 
 }

@@ -2,11 +2,8 @@ package com.shopproject.purchase.service.impl;
 
 import com.shopproject.purchase.dtos.CreateGuaranteeRequest;
 import com.shopproject.purchase.dtos.GuaranteeDto;
-import com.shopproject.purchase.dtos.ProductDto;
 import com.shopproject.purchase.exeptions.GuaranteeException;
-import com.shopproject.purchase.exeptions.NoMoreProductsInStorageException;
 import com.shopproject.purchase.service.GuaranteeService;
-import com.sun.tools.attach.AttachOperationFailedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -24,18 +20,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class GuaranteeServiceImpl implements GuaranteeService {
 
-    private final AuthService authService;
+    private final AuthServiceImpl authServiceImpl;
     private final RestTemplate restTemplate;
 
     @Retryable(value = {GuaranteeException.class}, maxAttempts = 10, backoff = @Backoff(delay = 800, multiplier = 2))
     @Override
     public void createGuarantee(CreateGuaranteeRequest guarantee) throws GuaranteeException {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(authService.getTokenByTechnicalUser());
+        headers.setBearerAuth(authServiceImpl.getTokenByTechnicalUser());
         ResponseEntity<GuaranteeDto> response = null;
         try {
             response = restTemplate.exchange(
-                    "http://localhost:8083/guarantee/set",
+                    "lb://GUARANTEE/guarantee/set",
                     HttpMethod.POST,
                     new HttpEntity<>(guarantee, headers),
                     GuaranteeDto.class);
@@ -51,11 +47,11 @@ public class GuaranteeServiceImpl implements GuaranteeService {
     @Override
     public void stopGuarantee(UUID purchaseId) throws GuaranteeException {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(authService.getTokenByTechnicalUser());
+        headers.setBearerAuth(authServiceImpl.getTokenByTechnicalUser());
         ResponseEntity<GuaranteeDto> response = null;
         try {
             response = restTemplate.exchange(
-                    "http://localhost:8083/guarantee/stop/" + purchaseId,
+                    "lb://GUARANTEE/guarantee/stop/" + purchaseId,
                     HttpMethod.POST,
                     new HttpEntity<>(headers),
                     GuaranteeDto.class);
@@ -72,11 +68,11 @@ public class GuaranteeServiceImpl implements GuaranteeService {
     public GuaranteeDto getGuaranteeByPurchase(UUID purchaseId) throws GuaranteeException {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(authService.getTokenByTechnicalUser());
+        headers.setBearerAuth(authServiceImpl.getTokenByTechnicalUser());
         ResponseEntity<GuaranteeDto> response = null;
         try {
             response = restTemplate.exchange(
-                    "http://localhost:8083/guarantee/" + purchaseId,
+                    "lb://GUARANTEE/guarantee/" + purchaseId,
                     HttpMethod.GET,
                     new HttpEntity<>(headers),
                     GuaranteeDto.class);

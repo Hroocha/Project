@@ -95,7 +95,6 @@
 		</dependency>
 
 
-
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -135,6 +134,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
 		</plugins>
 		<finalName>purchase</finalName>
 	</build>

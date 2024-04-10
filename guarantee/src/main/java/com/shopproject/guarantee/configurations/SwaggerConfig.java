@@ -17,7 +17,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .servers(
                         List.of(
-                                new Server().url("http://localhost:8083")
+                                new Server().url("lb://GUARANTEE")
                         )
                 )
                 .info(

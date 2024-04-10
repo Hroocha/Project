@@ -1,12 +1,12 @@
 package com.shopproject.purchase.service.impl;
 
-import com.shopproject.purchase.dtos.statisticsDto.SalesRequest;
-import com.shopproject.purchase.dtos.statisticsDto.SalesResponse;
+import com.shopproject.purchase.dtos.SalesRequest;
+import com.shopproject.purchase.dtos.SalesResponse;
 import com.shopproject.purchase.entities.Purchase;
 import com.shopproject.purchase.repository.PurchaseRepository;
+import com.shopproject.purchase.service.StatisticService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,32 +19,39 @@ import static com.shopproject.purchase.entities.Status.PURCHASED;
 
 @Service
 @RequiredArgsConstructor
-public class StatisticService {
+public class StatisticServiceImpl implements StatisticService {
 
     private final PurchaseRepository purchaseRepository;
 
+    @Override
     @Transactional
-    public ResponseEntity<?> getSales(LocalDateTime from, LocalDateTime to){
+    public SalesResponse getSales(LocalDateTime from, LocalDateTime to){
         List<Purchase> purchases = purchaseRepository.getAllByDateOfPurchaseBetweenAndStatus(from, to, PURCHASED);
-        return ResponseEntity.ok(new SalesResponse("всего покупок", purchases.size(), getTotal(purchases)));
+        return new SalesResponse("всего покупок", purchases.size(), getTotal(purchases));
     }
+
+    @Override
     @Transactional
-    public ResponseEntity<?> getSalesByProductId(UUID productId, LocalDateTime from, LocalDateTime to){
+    public SalesResponse getSalesByProductId(UUID productId, LocalDateTime from, LocalDateTime to){
         List<Purchase> purchases = purchaseRepository.getAllByDateOfPurchaseBetweenAndStatusAndProductIdEquals(
                 from, to, PURCHASED, productId);
-        return ResponseEntity.ok(new SalesResponse( productId.toString(), purchases.size(), getTotal(purchases)));
+        return new SalesResponse( productId.toString(), purchases.size(), getTotal(purchases));
     }
+
+    @Override
     @Transactional
-    public ResponseEntity<?> getAverageBill (SalesRequest salesRequest){
+    public Double getAverageBill (SalesRequest salesRequest){
         List<Purchase> purchases = purchaseRepository.getAllByDateOfPurchaseBetweenAndStatus(
                 salesRequest.getDateFrom(),salesRequest.getDateTo(), PURCHASED);
-        return ResponseEntity.ok(getAverage(purchases));
+        return getAverage(purchases);
     }
+
+    @Override
     @Transactional
-    public ResponseEntity<?> getAverageBillByUserId(UUID userId, SalesRequest salesRequest){
+    public Double getAverageBillByUserId(UUID userId, SalesRequest salesRequest){
         List<Purchase> purchases = purchaseRepository.getAllByDateOfPurchaseBetweenAndStatusAndUserIdEquals(
                 salesRequest.getDateFrom(),salesRequest.getDateTo(), PURCHASED, userId);
-        return ResponseEntity.ok(getAverage(purchases));
+        return getAverage(purchases);
     }
 
 

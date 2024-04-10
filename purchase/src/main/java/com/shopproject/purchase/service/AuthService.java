@@ -1,4 +1,4 @@
-package com.shopproject.report.service;
+package com.shopproject.purchase.service;
 
 public interface AuthService {
     String getTokenByTechnicalUser();

@@ -2,6 +2,7 @@ package com.shopproject.guarantee.controller;
 
 import com.shopproject.guarantee.dto.GuaranteeRequest;
 import com.shopproject.guarantee.service.GuaranteeService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -12,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "main_methods")
+@Tag(name = "main methods")
 public class GuaranteeController {
     private final GuaranteeService guaranteeService;
 
@@ -32,6 +33,7 @@ public class GuaranteeController {
         return ResponseEntity.ok(guaranteeService.getGuarantee(purchaseId));
     }
 
+    @Hidden
     @GetMapping("/guarantee/api-docs")
     public SpringDocConfigProperties.ApiDocs.OpenApiVersion[] doc(){
         return SpringDocConfigProperties.ApiDocs.OpenApiVersion.values();

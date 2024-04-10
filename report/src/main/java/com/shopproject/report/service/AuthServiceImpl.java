@@ -1,7 +1,7 @@
-package com.shopproject.purchase.service.impl;
+package com.shopproject.report.service;
 
-import com.shopproject.purchase.dtos.JwtRequest;
-import com.shopproject.purchase.dtos.JwtResponse;
+import com.shopproject.report.dtos.JwtRequest;
+import com.shopproject.report.dtos.JwtResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -13,13 +13,14 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthServiceImpl implements AuthService{
     private final RestTemplate restTemplate;
 
+    @Override
     public String getTokenByTechnicalUser() {
         JwtRequest request = new JwtRequest("technicalUser", "123");
         ResponseEntity<JwtResponse> response = restTemplate.exchange(
-                "http://localhost:8081/auth",
+                "lb://USER/auth",
                 HttpMethod.POST,
                 new HttpEntity<>(request),
                 JwtResponse.class

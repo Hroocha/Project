@@ -16,12 +16,12 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .servers(
                         List.of(
-                                new Server().url("http://localhost:8765"),
-                                new Server().url("http://localhost:8080"),
-                                new Server().url("http://localhost:8081"),
-                                new Server().url("http://localhost:8082"),
-                                new Server().url("http://localhost:8083"),
-                                new Server().url("http://localhost:8084")
+                                new Server().url("lb://GATEWAY"),
+                                new Server().url("lb://PRODUCT"),
+                                new Server().url("lb://USER"),
+                                new Server().url("lb://PURCHASE"),
+                                new Server().url("lb://GUARANTEE"),
+                                new Server().url("lb://REPORT")
                         )
                 )
                 .info(

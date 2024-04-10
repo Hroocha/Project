@@ -9,8 +9,7 @@ import java.util.Random;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
-    @Override
-    public Integer getRandomChance() {
+    private Integer getRandomChance() {
         Random rand = new Random();
         return rand.nextInt(10000) + 1;
     }

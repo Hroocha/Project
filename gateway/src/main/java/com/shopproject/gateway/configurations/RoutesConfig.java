@@ -5,50 +5,53 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 public class RoutesConfig {
+
 
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(r -> r.path("/products")
-                        .uri("http://localhost:8080/products"))
+                        .uri("lb://PRODUCT/products"))
                 .route(r -> r.path("/products/{id}")
-                        .uri("http://localhost:8080/products/"))
+                        .uri("lb://PRODUCT/products/"))
 
                 .route(r -> r.path("/me")
-                        .uri("http://localhost:8081/me"))
+                        .uri("lb://USER/me"))
                 .route(r -> r.path("/registration")
-                        .uri("http://localhost:8081/registration"))
+                        .uri("lb://USER/registration"))
                 .route(r -> r.path("/auth")
-                        .uri("http://localhost:8081/auth"))
+                        .uri("lb://USER/auth"))
 
                 .route(r -> r.path("/purchase/{id}")
-                        .uri("http://localhost:8082/purchase/"))
+                        .uri("lb://PURCHASE/purchase/"))
                 .route(r -> r.path("/refund/{id}")
-                        .uri("http://localhost:8082/refund/"))
+                        .uri("lb://PURCHASE/refund/"))
+
                 .route(r -> r.path("/orders")
-                        .uri("http://localhost:8082/orders"))
+                        .uri("lb://PURCHASE/orders"))
 
                 .route(r -> r.path("/statistics/sales")
-                        .uri("http://localhost:8084/statistics/sales"))
+                        .uri("lb://REPORT/statistics/sales"))
                 .route(r -> r.path("/statistics/sales/{product_id}")
-                        .uri("http://localhost:8084/statistics/sales/"))
+                        .uri("lb://REPORT/statistics/sales/"))
                 .route(r -> r.path("/statistics/average_bill")
-                        .uri("http://localhost:8084/statistics/average_bill"))
+                        .uri("lb://REPORT/statistics/average_bill"))
                 .route(r -> r.path("/statistics/average_bill/{user_id}")
-                        .uri("http://localhost:8084/statistics/average_bill/"))
+                        .uri("lb://REPORT/statistics/average_bill/"))
 
                 .route(r -> r.path("/product/api-docs")
-                        .uri("http://localhost:8080/product/api-docs"))
+                        .uri("lb://PRODUCT/product/api-docs"))
                 .route(r -> r.path("/user/api-docs")
-                        .uri("http://localhost:8081/user/api-docs"))
-                .route(r -> r.path("/purchase/api-docs")
-                        .uri("http://localhost:8082/purchase/api-docs"))
+                        .uri("lb://USER/user/api-docs"))
+                .route("purchase", r -> r.path( "/purchase/api-docs")
+                        .uri("lb://PURCHASE/purchase/api-docs"))
                 .route(r -> r.path("/guarantee/api-docs")
-                        .uri("http://localhost:8083/guarantee/api-docs"))
+                        .uri("lb://GUARANTEE/guarantee/api-docs"))
                 .route(r -> r.path("/report/api-docs")
-                        .uri("http://localhost:8084/report/api-docs"))
+                        .uri("lb://REPORT/report/api-docs"))
 
                 .build();
 

@@ -4,6 +4,7 @@ import com.shopproject.user.dtos.UserDto;
 import com.shopproject.user.entity.User;
 import com.shopproject.user.exeptions.AppError;
 import com.shopproject.user.service.UserService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "user_methods")
+@Tag(name = "user methods")
 public class UserController {
     private final UserService userService;
 
@@ -28,6 +29,7 @@ public class UserController {
         return new UserDto(user.getId(), user.getName(), user.getMail());
     }
 
+    @Hidden
     @GetMapping("/user/api-docs")
     public SpringDocConfigProperties.ApiDocs.OpenApiVersion[] doc(){
         return SpringDocConfigProperties.ApiDocs.OpenApiVersion.values();

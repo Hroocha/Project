@@ -11,13 +11,6 @@ import java.util.UUID;
  */
 public interface ProductService {
 
-//    /**
-//     * Получить описание товара по ID
-//     * @param id Идентификатор товара
-//     * @return Описание товара
-//     */
-//    ProductDto findById(UUID id);
-
     /**
      * Достать одну единицу товара со склада
      * @param id Идентификатор товара

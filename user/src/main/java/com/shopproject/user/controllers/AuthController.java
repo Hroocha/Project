@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "authentication_methods")
+@Tag(name = "authentication methods")
 public class AuthController {
     private final AuthService authService;
 
