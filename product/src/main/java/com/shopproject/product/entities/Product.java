@@ -2,6 +2,7 @@ package com.shopproject.product.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "products")
+@Builder
 public class Product {
 
     @Id
@@ -34,6 +36,7 @@ public class Product {
 
     @Version
     @Column(name = "version")
-    private Integer version;
+    @Builder.Default
+    private Integer version = 0;
 
 }

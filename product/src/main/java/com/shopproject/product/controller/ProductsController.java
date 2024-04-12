@@ -9,13 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
-@EnableScheduling
 @Tag(name = "main methods")
 @RequiredArgsConstructor
 public class ProductsController {

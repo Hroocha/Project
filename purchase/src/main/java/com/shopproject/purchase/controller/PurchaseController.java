@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@EnableScheduling
-@EnableRetry
 @RequiredArgsConstructor
 @Tag(name = "main methods")
 public class PurchaseController {
