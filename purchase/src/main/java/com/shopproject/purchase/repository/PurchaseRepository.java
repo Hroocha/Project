@@ -11,7 +11,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,11 +20,6 @@ public interface PurchaseRepository extends PagingAndSortingRepository<Purchase,
 
     @Lock(LockModeType.OPTIMISTIC)
     Optional<Purchase> findFirstByStatusOrderByDateOfPurchase(Status status);
-
-    @Lock(LockModeType.OPTIMISTIC)
-    Optional<Purchase> findFirstByStatusInOrderByDateOfPurchase(Collection<Status> status);
-
-    // ниже только на чтение подойдет RC
 
     Page<Purchase> findByUserId(Pageable pageable, UUID id);
 

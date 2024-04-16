@@ -48,7 +48,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>eureka-service</image>
+						<image>eureka-image</image>
 					</to>
 				</configuration>
 			</plugin>
@@ -56,28 +56,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<mainClass>com.shopproject.eureka</mainClass>-->
-<!--					<layout>JAR</layout>-->
-<!--				</configuration>-->
-<!--				<executions>-->
-<!--				<execution>-->
-<!--					<goals>-->
-<!--						<goal>repackage</goal>-->
-<!--					</goals>-->
-<!--				</execution>-->
-<!--				</executions>-->
-<!--			</plugin>-->
 		</plugins>
 		<finalName>eureka</finalName>
 	</build>
-
-<!--	<properties>-->
-<!--		&lt;!&ndash; The main class to start by executing java -jar &ndash;&gt;-->
-<!--		<start-class>target</start-class>-->
-<!--	</properties>-->
 
 </project>

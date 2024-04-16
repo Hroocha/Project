@@ -8,7 +8,6 @@ import com.shopproject.purchase.service.StatisticService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class StatisticServiceImpl implements StatisticService {
     @Transactional
     public SalesResponse getSales(LocalDateTime from, LocalDateTime to){
         List<Purchase> purchases = purchaseRepository.getAllByDateOfPurchaseBetweenAndStatus(from, to, PURCHASED);
-        return new SalesResponse("всего покупок", purchases.size(), getTotal(purchases));
+        return new SalesResponse(purchases.size(), getTotal(purchases));
     }
 
     @Override
@@ -35,7 +34,7 @@ public class StatisticServiceImpl implements StatisticService {
     public SalesResponse getSalesByProductId(UUID productId, LocalDateTime from, LocalDateTime to){
         List<Purchase> purchases = purchaseRepository.getAllByDateOfPurchaseBetweenAndStatusAndProductIdEquals(
                 from, to, PURCHASED, productId);
-        return new SalesResponse( productId.toString(), purchases.size(), getTotal(purchases));
+        return new SalesResponse(purchases.size(), getTotal(purchases));
     }
 
     @Override

@@ -1,16 +1,13 @@
 package com.shopproject.purchase.entities;
 
-
 public enum Status {
-    CREATE,
-    PAID,
-    GUARANTEE_ERROR,
-    PAYMENT_ERROR,
-    REFUND_MONEY,
-    PRODUCT_RETURN,
-    PUT_PRODUCT,
+    WAITING_FOR_PAYMENT,
+    WAITING_FOR_MAKE_GUARANTEE,
+    WAITING_FOR_REFUND_OF_PAYMENT,
+    WAITING_FOR_PUT_BACK_PRODUCT,
+    WAITING_FOR_REFUND_MONEY,
+    WAITING_FOR_RETURN_PRODUCT,
     PURCHASED,
     REFUND,
-    PURCHASE_ERROR;
+    PURCHASE_ERROR
     }
- // создан, оплачен, ошибка гарантии, ошибка оплаты, ошибка товара, куплен, возвращен, ошибка покупки

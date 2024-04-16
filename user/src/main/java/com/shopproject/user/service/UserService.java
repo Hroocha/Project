@@ -3,10 +3,8 @@ package com.shopproject.user.service;
 import com.shopproject.user.dtos.RegistrationUserDTO;
 import com.shopproject.user.entity.User;
 import com.shopproject.user.repository.UserRepository;
-import com.shopproject.user.utils.JwtTokenUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,8 +30,6 @@ public class UserService implements UserDetailsService {
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-
 
 
     public Optional<User> findByLogin(String login) {

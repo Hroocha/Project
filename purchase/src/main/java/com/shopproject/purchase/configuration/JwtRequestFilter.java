@@ -1,6 +1,5 @@
 package com.shopproject.purchase.configuration;
 
-
 import com.shopproject.purchase.utils.JwtTokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

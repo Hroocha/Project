@@ -2,12 +2,10 @@ package com.shopproject.report.controller;
 
 import com.shopproject.report.dtos.SalesRequest;
 import com.shopproject.report.service.ReportService;
-import com.shopproject.report.service.ReportServiceImpl;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.properties.SpringDocConfigProperties;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

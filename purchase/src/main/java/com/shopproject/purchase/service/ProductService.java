@@ -13,6 +13,7 @@ public interface ProductService {
 
     /**
      * Достать одну единицу товара со склада
+     *
      * @param id Идентификатор товара
      * @throws NoMoreProductsInStorageException В случае, если товар закончился на складе
      * @return Описание товара
@@ -21,6 +22,7 @@ public interface ProductService {
 
     /**
      * Вернуть товар на склад
+     *
      * @param id Идентификатор товара
      * @throws ProductException В случае если не удалось вернуть товар на склад
      */

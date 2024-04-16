@@ -89,7 +89,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -106,10 +105,20 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<to>
+						<image>guarantee-image</image>
+					</to>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<configuration>
-					<url>jdbc:postgresql://localhost:5433/guarantees?currentSchema=public</url>
+					<url>jdbc:postgresql://host.docker.internal:5433/guarantees?currentSchema=public</url>
 					<user>postgres</user>
 					<password>postgres</password>
 					<schemas>

@@ -2,7 +2,6 @@ package com.shopproject.purchase.service.impl;
 
 import com.shopproject.purchase.dtos.*;
 import com.shopproject.purchase.entities.Purchase;
-import com.shopproject.purchase.entities.Status;
 import com.shopproject.purchase.exeptions.GuaranteeException;
 import com.shopproject.purchase.exeptions.PaymentGatewayException;
 import com.shopproject.purchase.exeptions.ProductException;
@@ -25,8 +24,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static com.shopproject.purchase.entities.Status.*;
@@ -46,7 +43,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     private final PurchaseDtoMapper purchaseDtoMapper;
 
-    private static final long schedulersRestartTime = 10000; // 10 секунд = 10000 миллисекунд todo
+    private static final long SCHEDULERS_RESTART_TIME = 10000; // 10 секунд = 10000 миллисекунд
 
 
     @Override
@@ -63,7 +60,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         UUID userId = UUID.fromString(SecurityContextHolder.getContext().getAuthentication().getCredentials().toString());
         var product = productService.takeOne(productId);
         Purchase purchase = new Purchase(userId, productId, product.getPrice(),
-                product.getGuaranteePeriod(), java.time.LocalDateTime.now(), CREATE);
+                product.getGuaranteePeriod(), java.time.LocalDateTime.now(), WAITING_FOR_PAYMENT);
         purchaseRepository.save(purchase);
         return product;
     }
@@ -80,7 +77,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         if (now.compareTo(guarantee.getValidUntil()) <= 0) {
             purchaseRepository.findById(purchaseId).ifPresent(purchase -> {
                 guaranteeService.stopGuarantee(purchaseId);
-                purchase.setStatus(REFUND_MONEY);
+                purchase.setStatus(WAITING_FOR_REFUND_MONEY);
                 purchase.setComment("Оформлен возврат товара");
             });
             return guarantee;
@@ -99,21 +96,23 @@ public class PurchaseServiceImpl implements PurchaseService {
         }
     }
 
-    @Scheduled(fixedRate = schedulersRestartTime)
+    @Scheduled(fixedRate = SCHEDULERS_RESTART_TIME)
     @Transactional
     public void makeGuarantee() {
-        var purchaseOptional = purchaseRepository.findFirstByStatusOrderByDateOfPurchase(PAID);
+        var purchaseOptional = purchaseRepository
+                .findFirstByStatusOrderByDateOfPurchase(WAITING_FOR_MAKE_GUARANTEE);
         if (purchaseOptional.isEmpty()) {
             return;
         }
 
         Purchase purchase = purchaseOptional.get();
-        CreateGuaranteeRequest createGuaranteeRequest = new CreateGuaranteeRequest(purchase.getId(), purchase.getGuaranteePeriod());
+        CreateGuaranteeRequest createGuaranteeRequest = new CreateGuaranteeRequest(
+                purchase.getId(), purchase.getGuaranteePeriod());
 
         try {
             guaranteeService.createGuarantee(createGuaranteeRequest);
         } catch (Exception e) {
-            purchase.setStatus(GUARANTEE_ERROR);
+            purchase.setStatus(WAITING_FOR_REFUND_OF_PAYMENT);
             purchase.setComment("Ошибка при формировании гарантии");
             return;
         }
@@ -122,10 +121,10 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchase.setComment("");
     }
 
-    @Scheduled(fixedRate = schedulersRestartTime)
+    @Scheduled(fixedRate = SCHEDULERS_RESTART_TIME)
     @Transactional
     public void putProductIfRefund() {
-        purchaseRepository.findFirstByStatusOrderByDateOfPurchase(PRODUCT_RETURN).ifPresent(purchase -> {
+        purchaseRepository.findFirstByStatusOrderByDateOfPurchase(WAITING_FOR_RETURN_PRODUCT).ifPresent(purchase -> {
             try {
                 productService.putOne(purchase.getProductId());
             } catch (ProductException e) {
@@ -136,10 +135,10 @@ public class PurchaseServiceImpl implements PurchaseService {
         });
     }
 
-    @Scheduled(fixedRate = schedulersRestartTime)
+    @Scheduled(fixedRate = SCHEDULERS_RESTART_TIME)
     @Transactional
     public void putProductIfPurchaseError() {
-        purchaseRepository.findFirstByStatusInOrderByDateOfPurchase(List.of(PUT_PRODUCT, PAYMENT_ERROR)).ifPresent(purchase -> {
+        purchaseRepository.findFirstByStatusOrderByDateOfPurchase((WAITING_FOR_PUT_BACK_PRODUCT)).ifPresent(purchase -> {
             try {
                 productService.putOne(purchase.getProductId());
             } catch (ProductException e) {
@@ -149,42 +148,42 @@ public class PurchaseServiceImpl implements PurchaseService {
         });
     }
 
-    @Scheduled(fixedRate = schedulersRestartTime)
+    @Scheduled(fixedRate = SCHEDULERS_RESTART_TIME)
     @Transactional
     public void pay() {
-        purchaseRepository.findFirstByStatusOrderByDateOfPurchase(CREATE).ifPresent(purchase -> {
+        purchaseRepository.findFirstByStatusOrderByDateOfPurchase(WAITING_FOR_PAYMENT).ifPresent(purchase -> {
             try {
                 paymentService.makePay(purchase.getPrice());
-                purchase.setStatus(PAID);
+                purchase.setStatus(WAITING_FOR_MAKE_GUARANTEE);
             } catch (PaymentGatewayException e) {
                 log.error("Не удалось провести оплату {}. Ошибка", purchase.getId(), e);
-                purchase.setStatus(PAYMENT_ERROR);
+                purchase.setStatus(WAITING_FOR_PUT_BACK_PRODUCT);
                 purchase.setComment("Ошибка оплаты");
             }
         });
     }
 
 
-    @Scheduled(fixedRate = schedulersRestartTime)
+    @Scheduled(fixedRate = SCHEDULERS_RESTART_TIME)
     @Transactional
     public void refundMoneyIfPurchaseRefund() {
-        purchaseRepository.findFirstByStatusOrderByDateOfPurchase(REFUND_MONEY).ifPresent(purchase -> {
+        purchaseRepository.findFirstByStatusOrderByDateOfPurchase(WAITING_FOR_REFUND_MONEY).ifPresent(purchase -> {
             try {
                 paymentService.refundMoney(purchase.getPrice());
-                purchase.setStatus(PRODUCT_RETURN);
+                purchase.setStatus(WAITING_FOR_RETURN_PRODUCT);
             } catch (PaymentGatewayException e) {
                 log.error("Не удалось вернуть деньги для товара {}. Ошибка", purchase.getId(), e);
             }
         });
     }
 
-    @Scheduled(fixedRate = schedulersRestartTime)
+    @Scheduled(fixedRate = SCHEDULERS_RESTART_TIME)
     @Transactional
     public void refundMoneyIfGetGuaranteeError() {
-        purchaseRepository.findFirstByStatusOrderByDateOfPurchase(GUARANTEE_ERROR).ifPresent(purchase -> {
+        purchaseRepository.findFirstByStatusOrderByDateOfPurchase(WAITING_FOR_REFUND_OF_PAYMENT).ifPresent(purchase -> {
             try {
                 paymentService.refundMoney(purchase.getPrice());
-                purchase.setStatus(PUT_PRODUCT);
+                purchase.setStatus(WAITING_FOR_PUT_BACK_PRODUCT);
             } catch (PaymentGatewayException e) {
                 log.error("Не удалось вернуть деньги для товара {}. Ошибка", purchase.getId(), e);
             }

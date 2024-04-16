@@ -58,10 +58,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-actuator</artifactId>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
@@ -114,7 +110,8 @@
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<configuration>
-					<url>jdbc:postgresql://localhost:5433/users?currentSchema=public</url>
+					<url>jdbc:postgresql://host.docker.internal:5433/users?currentSchema=public</url>
+<!--					<url>jdbc:postgresql://localhost:5433/users?currentSchema=public</url>-->
 					<user>postgres</user>
 					<password>postgres</password>
 					<schemas>
@@ -132,6 +129,16 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<to>
+						<image>user-image</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>

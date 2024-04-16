@@ -63,7 +63,7 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -98,36 +98,6 @@
 			<version>1.19.6</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-common</artifactId>
-			<version>3.1.2</version>
-			<scope>test</scope>
-		</dependency>
-
-
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-spring-web</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>io.springfox</groupId>-->
-<!--			<artifactId>springfox-swagger2</artifactId>-->
-<!--			<version>3.0.0</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>io.springfox</groupId>-->
-<!--			<artifactId>springfox-boot-starter</artifactId>-->
-<!--			<version>3.0.0</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>io.springfox</groupId>-->
-<!--			<artifactId>springfox-swagger-ui</artifactId>-->
-<!--			<version>3.0.0</version>-->
-<!--		</dependency>-->
-
-
 
 	</dependencies>
 	<dependencyManagement>
@@ -148,7 +118,7 @@
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<configuration>
-					<url>jdbc:postgresql://localhost:5433/products?currentSchema=public</url>
+					<url>jdbc:postgresql://host.docker.internal:5433/products?currentSchema=public</url>
 					<user>postgres</user>
 					<password>postgres</password>
 					<schemas>
@@ -156,8 +126,18 @@
 					</schemas>
 				</configuration>
 			</plugin>
-
 			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<to>
+						<image>product-image</image>
+					</to>
+				</configuration>
+			</plugin>
+			<plugin>
+
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>

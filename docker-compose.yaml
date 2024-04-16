@@ -1,0 +1,68 @@
+version: "2.22"
+
+services:
+
+  eureka:
+    image: eureka-image:latest
+    ports:
+      - "8761:8761"
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  user:
+    image: user-image:latest
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka
+      - postgres
+
+  product:
+    image: product-image:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka
+      - postgres
+
+  guarantee:
+    image: guarantee-image:latest
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka
+      - postgres
+
+  report:
+    image: report-image:latest
+    ports:
+      - "8084:8084"
+    depends_on:
+      - eureka
+      - postgres
+
+  purchase:
+    image: purchase-image:latest
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka
+      - postgres
+
+  gateway:
+    image: gateway-image:latest
+    ports:
+      - "8765:8765"
+    depends_on:
+      - eureka
+      - postgres
+

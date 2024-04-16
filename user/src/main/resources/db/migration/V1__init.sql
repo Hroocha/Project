@@ -8,3 +8,9 @@ CREATE TABLE users
     mail     VARCHAR(255)        NOT NULL,
     version  INTEGER
 );
+INSERT INTO users (login, password, name, mail, version)
+VALUES ('technicalUser',
+        '$2a$10$XA31gdV3roTX9oKM1omPgOgvxgXe80acU2PAH22Sr6wbFrHCAdk3G',
+        'technicalUser',
+        'technicalUser@noMail.com',
+        0);

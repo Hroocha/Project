@@ -1,6 +1,5 @@
 package com.shopproject.product.controller;
 
-
 import com.shopproject.product.dto.ProductResponse;
 import com.shopproject.product.service.ProductsServiceImpl;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -21,7 +20,8 @@ public class ProductsController {
     private final ProductsServiceImpl productsService;
 
     @GetMapping("/products")
-    public Page<ProductResponse> showAll (@RequestParam(value = "page") int page, @RequestParam(value = "page_size") int pageSize){
+    public Page<ProductResponse> showAll (@RequestParam(value = "page") int page,
+                                          @RequestParam(value = "page_size") int pageSize){
         return productsService.getAll(page, pageSize);
     }
     @GetMapping("/products/{id}")

@@ -6,7 +6,6 @@ import com.shopproject.product.entities.Warehouse;
 import com.shopproject.product.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;

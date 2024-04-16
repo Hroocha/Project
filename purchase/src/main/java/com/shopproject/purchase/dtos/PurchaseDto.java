@@ -4,10 +4,9 @@ import com.shopproject.purchase.entities.Status;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record PurchaseDto (
+public record PurchaseDto(
         UUID id,
         UUID productId,
         BigDecimal price,
@@ -15,5 +14,5 @@ public record PurchaseDto (
         LocalDate dateOfPurchase,
         Status status,
         String comment
-){
+) {
 }

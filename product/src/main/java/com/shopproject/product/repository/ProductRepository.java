@@ -1,6 +1,5 @@
 package com.shopproject.product.repository;
 
-
 import com.shopproject.product.entities.Product;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;

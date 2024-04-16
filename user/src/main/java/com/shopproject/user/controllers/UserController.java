@@ -2,7 +2,6 @@ package com.shopproject.user.controllers;
 
 import com.shopproject.user.dtos.UserDto;
 import com.shopproject.user.entity.User;
-import com.shopproject.user.exeptions.AppError;
 import com.shopproject.user.service.UserService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;

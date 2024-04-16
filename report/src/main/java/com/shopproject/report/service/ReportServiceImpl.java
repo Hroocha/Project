@@ -1,16 +1,10 @@
 package com.shopproject.report.service;
 
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.DiscoveryClient;
-import com.netflix.discovery.EurekaClient;
 import com.shopproject.report.dtos.SalesRequest;
 import com.shopproject.report.dtos.SalesResponse;
 import com.shopproject.report.exeptions.ReportException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.http.*;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;

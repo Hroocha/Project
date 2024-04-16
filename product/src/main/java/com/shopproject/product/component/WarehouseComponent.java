@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class WarehouseComponent {
 
-    @PersistenceContext //открывает и закрывает автоматически
+    @PersistenceContext
     private EntityManager entityManager;
 
-    @Scheduled(fixedRate = 300000) // 5 минут = 300000 миллисекунд; 10 секунд = 10000 миллисекунд
+    @Scheduled(fixedRate = 300000) // 5 минут = 300000 миллисекунд;
     @Transactional
     public void increaseAllQuantities() {
         entityManager.createNativeQuery("UPDATE warehouse SET quantity = quantity + 2 ").executeUpdate();

@@ -1,7 +1,6 @@
 package com.shopproject.guarantee.service;
 
 import com.shopproject.guarantee.dto.GuaranteeDto;
-
 import java.util.UUID;
 
 public interface GuaranteeService {

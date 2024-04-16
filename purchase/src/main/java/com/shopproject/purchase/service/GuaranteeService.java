@@ -34,6 +34,7 @@ public interface GuaranteeService {
      *
      * @param purchaseId Идентификатор покупки
      * @throws GuaranteeException В случае если гарантия не найдена
+     * @return Описание гарантии
      */
     GuaranteeDto getGuaranteeByPurchase(UUID purchaseId) throws GuaranteeException;
 
