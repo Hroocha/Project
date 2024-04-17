@@ -127,12 +127,6 @@ docker-compose up -d
 - Postman
 
 
-И добавьте в свой проект:
 ```typescript
-import { hi } from "your-awesome-plugin-name";
 
-hi(); // Выведет в консоль "Привет!"
 ```
-
-## Мои контакты
-- [Анастасия](tg:) — 
