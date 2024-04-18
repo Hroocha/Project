@@ -1,51 +1,106 @@
 version: "2.22"
 
+# перед запуском файла рекомендую проверить версию ↑ на соответствие
+# в этом файле есть два варианта
+# 1 вариант если image предполагается скачать с docker hub
+# 2 вариант если сборка image через плагин jib:dockerBuild
+
+# 1 вариант
 services:
 
   eureka:
-    image: eureka-service:latest
+    image: iamanastasia/shop_project:eureka-service
     ports:
       - "8761:8761"
 
   user:
-    image: user-service:latest
+    image: iamanastasia/shop_project:user-service
     ports:
       - "8081:8081"
     depends_on:
       - eureka
 
   product:
-    image: product-service:latest
+    image: iamanastasia/shop_project:product-service
     ports:
       - "8080:8080"
     depends_on:
       - eureka
 
   guarantee:
-    image: guarantee-service:latest
+    image: iamanastasia/shop_project:guarantee-service
     ports:
       - "8083:8083"
     depends_on:
       - eureka
 
   report:
-    image: report-service:latest
+    image: iamanastasia/shop_project:report-service
     ports:
       - "8084:8084"
     depends_on:
       - eureka
 
   purchase:
-    image: purchase-service:latest
+    image: iamanastasia/shop_project:purchase-service
     ports:
       - "8082:8082"
     depends_on:
       - eureka
 
   gateway:
-    image: gateway-service:latest
+    image: iamanastasia/shop_project:gateway-service
     ports:
       - "8765:8765"
     depends_on:
       - eureka
 
+# 1 вариант
+#services:
+#
+#  eureka:
+#    image: eureka-service:latest
+#    ports:
+#      - "8761:8761"
+#
+#  user:
+#    image: user-service:latest
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - eureka
+#
+#  product:
+#    image: product-service:latest
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - eureka
+#
+#  guarantee:
+#    image: guarantee-service:latest
+#    ports:
+#      - "8083:8083"
+#    depends_on:
+#      - eureka
+#
+#  report:
+#    image: report-service:latest
+#    ports:
+#      - "8084:8084"
+#    depends_on:
+#      - eureka
+#
+#  purchase:
+#    image: purchase-service:latest
+#    ports:
+#      - "8082:8082"
+#    depends_on:
+#      - eureka
+#
+#  gateway:
+#    image: gateway-service:latest
+#    ports:
+#      - "8765:8765"
+#    depends_on:
+#      - eureka
