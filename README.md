@@ -126,13 +126,118 @@ docker-compose up -d
 ```
 - Затем в докере включить повторно контейнеры сервисов, если они остановились
 
-### Требования
-Для установки и запуска проекта, необходимs
-- [Intellij Idea](https://www.jetbrains.com/ru-ru/idea/).
-- Docker
-- Postman
+## Тестирование проекта
+
+Для проверки этндпоинтов в Postman нужно нажать import и вставить туда cURL:
 
 
-```typescript
 
+Регистрация нового пользователя:
+```
+curl --location 'localhost:8765/registration' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "login": "technicalUser",
+    "password": "123",
+    "confirmPassword": "123",
+    "name": "technicalUser",
+    "mail": "technicalUser@noMail.com"
+}'
+```
+
+Аутентификация:
+```
+curl --location 'localhost:8765/auth' \
+--header 'Content-Type: application/json' \
+--data '{
+    "login": "123",
+    "password": "123"
+}'
+```
+
+Информация о пользователе:  
+(нужно вставить актуальный токен, который выдается при аутентификации)
+```
+curl --location 'localhost:8765/me' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpZCI6ImQ4ZWY5ZTRjLTc4MzgtNGM3OC1iZDMyLWVkZTlmZTQ3YWI2OCIsImlhdCI6MTcxMjI0NTAzNywiZXhwIjoxNzEyMjQ2ODM3fQ.K5HIGDBLEaNSZfgT4ii0Yb_YOsT2X24-0zowPuUVP5k' \
+--data ''
+```
+
+Просмотр всех продуктов:
+```
+curl --location 'localhost:8765/products?page=0&page_size=3' \
+--data ''
+```
+
+Просмотр конкретного продукта:  
+(нужно указать ID продукта, найти ID можно при просмотре всех продуктов)
+```
+curl --location --request GET 'localhost:8765/products/6ec9b4cb-6274-437c-b96a-6e246d564ef8' \
+--header 'Content-Type: application/json' \
+--data '{
+    "id": "6ec9b4cb-6274-437c-b96a-6e246d564ef8"
+}'
+```
+
+Покупка продукта:  
+(нужно указать ID продукта и токен, найти ID можно при просмотре всех продуктов, а получить токен можно при аутентификации)
+```
+curl --location 'localhost:8765/purchase/6ec9b4cb-6274-437c-b96a-6e246d564ef8' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJOYXN0aWExMjMiLCJpZCI6IjNkNzM5OTZjLTdkOWUtNDIyZi05NGZjLTM4ODQwZjAyMDJlOSIsImlhdCI6MTcxMTk2NDQ1MSwiZXhwIjoxNzExOTY2MjUxfQ.DLzmQGm1xh0hG8fTtkoRBQvWA5DGPZAkUq6C4-OYmBs' \
+--data '{
+    "id": "6ec9b4cb-6274-437c-b96a-6e246d564ef8"
+}
+'
+```
+
+Вернуть покупку:  
+(нужно указать ID покупки и токен, найти ID покупки можно при просмотре заказов, а получить токен можно при аутентификации)
+```
+curl --location 'localhost:8765/refund/0cddf6fb-f7a0-4d08-9e93-2a658540f973' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJOYXN0aWExMjMiLCJpZCI6IjNkNzM5OTZjLTdkOWUtNDIyZi05NGZjLTM4ODQwZjAyMDJlOSIsImlhdCI6MTcxMTYwOTMwMywiZXhwIjoxNzExNjExMTAzfQ.0uTLmTfDSz06IFBJUBBSlr73yVv9fGTgNYNZSZrywUg' \
+--data '{
+    "purchase_id": "0cddf6fb-f7a0-4d08-9e93-2a658540f973"
+}'
+```
+
+Посмотреть заказы:  
+(нужно указать токен, получить токен можно при аутентификации)
+```
+curl --location 'localhost:8765/orders?page=0' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpZCI6ImQ4ZWY5ZTRjLTc4MzgtNGM3OC1iZDMyLWVkZTlmZTQ3YWI2OCIsImlhdCI6MTcxMjI0NTc5OSwiZXhwIjoxNzEyMjQ3NTk5fQ.eWeXSX7mg_svWIXuLKFzR8dKHp3t8UW2w7mHLBvTcgY' \
+--data ''
+```
+
+Статистика, сколько продано за период:  
+(нужно указать период и токен, получить токен можно при аутентификации)
+```
+curl --location 'localhost:8765/statistics/sales?date_from=2022-01-31&date_to=2024-04-02'
+```
+
+Статистика, сколько продано конкретного товара за период:  
+(нужно указать ID товара, период и токен, найти ID можно при просмотре всех продуктов, а получить токен при аутентификации)
+```
+curl --location 'localhost:8765/statistics/sales/6ec9b4cb-6274-437c-b96a-6e246d564ef8?date_from=2022-01-31&date_to=2024-04-02' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpZCI6ImQ4ZWY5ZTRjLTc4MzgtNGM3OC1iZDMyLWVkZTlmZTQ3YWI2OCIsImlhdCI6MTcxMjI0NzkwMiwiZXhwIjoxNzEyMjQ5NzAyfQ.vj9PI_Cg-RhrAblpnm9gOB8e2G0cfPGpzSNXwlUgX8w'
+```
+
+Статистика, средний чек за период:  
+(нужно указать период и токен, получить токен можно при аутентификации)
+```
+curl --location 'localhost:8765/statistics/average_bill?date_from=2022-01-31&date_to=2024-04-05' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpZCI6ImQ4ZWY5ZTRjLTc4MzgtNGM3OC1iZDMyLWVkZTlmZTQ3YWI2OCIsImlhdCI6MTcxMjI1MDEyMCwiZXhwIjoxNzEyMjUxOTIwfQ.7BgMbC8VZHUJSqNCDz7HE6fJXvXOwaZTC24RAuhqsSs'
+```
+
+Статистика, средний чек у конкретного пользователя за период:  
+(нужно указать ID пользователя, период и токен, ID пользователя можно узнать в информации о пользователе, а получить токен можно при аутентификации)
+```
+curl --location --request GET 'localhost:8765/statistics/average_bill/d8ef9e4c-7838-4c78-bd32-ede9fe47ab68?date_from=2022-01-31&date_to=2024-04-05' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpZCI6ImQ4ZWY5ZTRjLTc4MzgtNGM3OC1iZDMyLWVkZTlmZTQ3YWI2OCIsImlhdCI6MTcxMjI1MDEyMCwiZXhwIjoxNzEyMjUxOTIwfQ.7BgMbC8VZHUJSqNCDz7HE6fJXvXOwaZTC24RAuhqsSs' \
+--data '{
+    "user_id": "d8ef9e4c-7838-4c78-bd32-ede9fe47ab68"
+}
+'
 ```
