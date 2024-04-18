@@ -135,12 +135,25 @@ Endpoints:
 Сервис подключает к себе все сервисы (и если есть их инстансы) и позволяет им обращаться к друг другу.
 
 ## Установка проекта
-возможны 2 варианта:
-
-
+- Создать в Docker контейнер postgres:
+  
+ ```
+docker run --name postgres-container -p 5433:5432 -e POSTGRES_PASSWORD=postgres -d postgres
+```
+  
+создать в postgres базы данных:
+  
+ ```
+create database guarantees;
+create database purchases;
+create database products;
+create database users;
+```
+Далее возможны 2 варианта:
+  
 ### 1 вариант если image предполагается скачать с docker hub:
 - Запустить dockercompose
- ```sh
+ ```
 docker-compose up -d 
 ```
 
@@ -148,7 +161,7 @@ docker-compose up -d
 - В каждом сервисе запустить плагин jib:dockerBuild - Создадутся образы сервисов
 - В dockercompose.yaml раскомментировать второй вариант (и закомментривать/удалить версию 1)
 - Запустить dockercompose
- ```sh
+ ```
 docker-compose up -d 
 ```
 
