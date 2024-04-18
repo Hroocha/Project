@@ -151,15 +151,18 @@ create database users;
 ```
 Далее возможны 2 варианта:
   
-### 1 вариант если image предполагается скачать с docker hub:
-- Запустить dockercompose
+### 1 вариант 
+- Запустить dockercompose  
+(images будут скачаны с docker hub)
+  
  ```
 docker-compose up -d 
 ```
 
-### 2 вариант если сборка image через плагин jib:dockerBuild
-- В каждом сервисе запустить плагин jib:dockerBuild - Создадутся образы сервисов
-- В dockercompose.yaml раскомментировать второй вариант (и закомментривать/удалить версию 1)
+### 2 вариант  
+- В каждом сервисе запустить плагин jib:dockerBuild  
+(будут создаданы образы сервисов)
+- В dockercompose.yaml раскомментировать второй вариант (и закомментривать/удалить вариант 1)
 - Запустить dockercompose
  ```
 docker-compose up -d 
